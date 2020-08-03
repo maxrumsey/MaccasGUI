@@ -1,4 +1,5 @@
 import sys
+from app import item
 sys.path.append('..')
 
 # pylint: disable=import-error
@@ -13,12 +14,12 @@ class Main:
         self.window.maxsize(1163, 800)
         self.itemSize = 1
         self.numberInput = ""
+        self.order = []
 
     def start(self):
         base.mainGUI(self.window, self)
         self.setCat("Coffee")
         self.window.mainloop()
-        print(1)
 
     def setCat(self, type):
         if type == "Coffee":
@@ -32,3 +33,19 @@ class Main:
         else:
             print("Unknown Type: " + str(type))
 
+    def addItem(self, name):
+        initItem = item.Item(name, int(self.itemSize), 15.50)
+        
+        found = False
+        for inx, val in enumerate(self.order):
+            if (val.name == initItem.name):
+                found = True
+                initItem.setAmount(1 + val.amount)
+                self.order.remove(val)
+                self.order.insert(inx, initItem)
+                break
+            
+        if not found:
+            self.order.append(initItem) 
+        
+        
