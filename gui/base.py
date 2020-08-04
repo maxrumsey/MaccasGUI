@@ -12,7 +12,8 @@ def mainGUI(window, manager):
     # Order Frames
     orderFrame.pack_propagate(0)
 
-    tk.Label(orderFrame, bg="white",fg="black",text="test",font=("Calibri",15)).pack()
+    manager.orderList = tk.Listbox(orderFrame, selectmode=tk.SINGLE, width=45, height=47)
+    manager.orderList.pack()
 
     # Input Frames
     inputFrameManager.base(inputFrame, manager)

@@ -1,4 +1,5 @@
 import sys
+import tkinter as tk
 from app import item
 sys.path.append('..')
 
@@ -15,6 +16,7 @@ class Main:
         self.itemSize = 1
         self.numberInput = ""
         self.order = []
+        self.orderList = None
 
     def start(self):
         base.mainGUI(self.window, self)
@@ -34,13 +36,22 @@ class Main:
             print("Unknown Type: " + str(type))
 
     def addItem(self, name):
-        initItem = item.Item(name, int(self.itemSize), 15.50)
+        if not name:
+            return
+
+        initItem = item.Item(name, 1, 15.50)
+
+        number = 1
+        if self.numberInput != "":
+            number = int(self.numberInput)
+            initItem.setAmount(number)
+            self.numberInput = ""
         
         found = False
         for inx, val in enumerate(self.order):
             if (val.name == initItem.name):
                 found = True
-                initItem.setAmount(1 + val.amount)
+                initItem.setAmount(initItem.amount + val.amount)
                 self.order.remove(val)
                 self.order.insert(inx, initItem)
                 break
@@ -48,4 +59,13 @@ class Main:
         if not found:
             self.order.append(initItem) 
         
+        self.buildItemsList()
         
+    def buildItemsList(self):
+        self.orderList.delete(0, tk.END)
+        for item in self.order:
+            txt = "{amount} {name} == {price}"
+            self.orderList.insert(tk.END, txt.format(amount=item.amount, name=item.name, price=item.total))
+
+    #def voidItem(self, index):
+    #    z
