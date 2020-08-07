@@ -33,7 +33,7 @@ def base(inputFrame, manager):
     for x in range(0, 5):
         tk.Button(orderCategories, text="", width=8, height=4).pack(side=tk.LEFT)
 
-    tk.Button(orderCategories, width=8, height=4, text="Void Line").pack(side=tk.LEFT)
+    tk.Button(orderCategories, width=8, height=4, text="Void Line", command=manager.voidItemPress).pack(side=tk.LEFT)
 
     for x in range(0,10):
         tk.Button(numberInput, command=numButClick(x), text=str(x), width=8, height=4).pack(side=tk.LEFT)
@@ -56,16 +56,20 @@ def base(inputFrame, manager):
     sizeBoard = tk.Frame(inputFrame, width=800, height=200, name="sizeBoard", bg="blue")
     sizeBoard.pack()
 
+
+    def getShowPricesButton():
+        manager.gui.showPrices()
+
     # Size Categories
     tk.Button(sizeBoard, width=8, height=4, text="Small").pack(side=tk.LEFT)
     tk.Button(sizeBoard, width=8, height=4, text="Medium").pack(side=tk.LEFT)
     tk.Button(sizeBoard, width=8, height=4, text="Large").pack(side=tk.LEFT)
     for x in range(0, 3):
         tk.Button(sizeBoard, text="", width=8, height=4).pack(side=tk.LEFT)
-    tk.Button(sizeBoard, width=8, height=4, text="Show\nPrices").pack(side=tk.LEFT)
+    tk.Button(sizeBoard, width=8, height=4, text="Show\nPrices", command=getShowPricesButton).pack(side=tk.LEFT)
     tk.Button(sizeBoard, width=8, height=4, text="Manager", highlightbackground="red", fg="green").pack(side=tk.LEFT)
     tk.Button(sizeBoard, width=16, height=4, text="Take\nOut", highlightbackground="red", fg="green").pack(side=tk.LEFT)
 
 
-
+        
 

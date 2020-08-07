@@ -17,6 +17,7 @@ class Main:
         self.numberInput = ""
         self.order = []
         self.orderList = None
+        self.gui = None
 
     def start(self):
         base.mainGUI(self.window, self)
@@ -42,16 +43,32 @@ class Main:
         initItem = item.Item(name, 1, 15.50)
 
         number = 1
+        numberSet = False
         if self.numberInput != "":
             number = int(self.numberInput)
             initItem.setAmount(number)
             self.numberInput = ""
+            numberSet = True
         
+        cursorIndex = self.orderList.curselection()
+
         found = False
         for inx, val in enumerate(self.order):
             if (val.name == initItem.name):
                 found = True
-                initItem.setAmount(initItem.amount + val.amount)
+                if (len(cursorIndex) != 0 and
+                    numberSet == True and
+                    cursorIndex[0] == inx):
+                    if (initItem.amount == 0):
+                        self.order.pop(inx)
+                    else:
+                        val.setAmount(initItem.amount)
+
+                    break
+
+                else:
+                    initItem.setAmount(initItem.amount + val.amount)
+
                 self.order.remove(val)
                 self.order.insert(inx, initItem)
                 break
@@ -66,6 +83,30 @@ class Main:
         for item in self.order:
             txt = "{amount} {name} == {price}"
             self.orderList.insert(tk.END, txt.format(amount=item.amount, name=item.name, price=item.total))
+                    
+                    
+        self.orderList.selection_set(0)
 
-    #def voidItem(self, index):
-    #    z
+    def voidItem(self, index):
+        self.order.pop(index)
+    
+    def voidItemPress(self):
+        listBox = self.orderList
+        index = listBox.curselection()[0]
+
+        if index != None:
+            order = self.order[index]
+            amount = order.amount
+
+            if amount > 1:
+                order.setAmount(amount-1)
+
+            else:
+                self.order.pop(index)
+
+            self.buildItemsList()
+
+            listBox.selection_clear(first=True)
+            listBox.selection_set(index)
+        
+        

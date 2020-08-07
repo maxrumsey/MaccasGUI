@@ -12,7 +12,7 @@ def mainGUI(window, manager):
     # Order Frames
     orderFrame.pack_propagate(0)
 
-    manager.orderList = tk.Listbox(orderFrame, selectmode=tk.SINGLE, width=45, height=47)
+    manager.orderList = tk.Listbox(orderFrame, selectmode=tk.SINGLE, name='orderList', width=45, height=47)
     manager.orderList.pack()
 
     # Input Frames

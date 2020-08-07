@@ -6,6 +6,7 @@ class GUIManager:
         self.manager = manager
         self.itemFrame = itemFrame
         self.rows = list()
+        self.prices = False
 
         childrenDict = dict(itemFrame.children)
         for w in childrenDict:
@@ -25,4 +26,12 @@ class GUIManager:
 
         return func
 
-    
+    def showPrices(self):
+        for row in self.rows:
+            for btext in row.children:
+                button = row.children[btext]
+                if not self.prices:
+                    button.text =  button.text + "\n$15.50"
+
+                else:
+                    button.text =  button.text.split("\n")[0]
