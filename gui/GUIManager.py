@@ -6,6 +6,7 @@ class GUIManager:
         self.manager = manager
         self.itemFrame = itemFrame
         self.rows = list()
+        self.rowNames = list()
         self.prices = False
 
         childrenDict = dict(itemFrame.children)
@@ -16,9 +17,12 @@ class GUIManager:
             row = tk.Frame(self.itemFrame, width=700, height=75, bg="yellow")
             row.pack()
             self.rows.insert(len(self.rows), row)
+            self.rowNames.append(list())
 
     def addItem(self, row, name):
-        tk.Button(self.rows[row], command= self.itemButtonHandler(name), text=name, width=8, height=4).pack(side=tk.LEFT)
+        b = tk.Button(self.rows[row], command= self.itemButtonHandler(name), text=name, width=8, height=4)
+        b.pack(side=tk.LEFT)
+        self.rowNames[row].append((b, name))
 
     def itemButtonHandler(self, name):
         def func():
@@ -30,8 +34,18 @@ class GUIManager:
         for row in self.rows:
             for btext in row.children:
                 button = row.children[btext]
+                text = self.getTextOfButton(button)
+                
                 if not self.prices:
-                    button.text =  button.text + "\n$15.50"
+                    button.configure(text =  text + "\n$15.50")
 
                 else:
-                    button.text =  button.text.split("\n")[0]
+                    button.configure(text =  text.split("\n")[0])
+                
+        self.prices = not self.prices
+    
+    def getTextOfButton(self, b):
+        for row in self.rowNames:
+            for buttonTuple in row:
+                if buttonTuple[0] == b:
+                    return buttonTuple[1]
