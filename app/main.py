@@ -7,6 +7,12 @@ sys.path.append('..')
 from gui import base
 from gui.cats import coffee
 
+sizeEnum = [
+    ("Small", 0.9),
+    ("Medium", 1),
+    ("Large", 1.2)
+]
+
 class Main:
     def __init__(self, window):
         self.window = window
@@ -39,8 +45,10 @@ class Main:
     def addItem(self, name):
         if not name:
             return
+        
+        initItem = item.Item(name, 1, 15.50 * sizeEnum[self.itemSize][1], sizeEnum[self.itemSize][0])
 
-        initItem = item.Item(name, 1, 15.50)
+        self.itemSize = 1
 
         number = 1
         numberSet = False
@@ -54,7 +62,9 @@ class Main:
 
         found = False
         for inx, val in enumerate(self.order):
-            if (val.name == initItem.name):
+            if (val.name == initItem.name and
+                val.size == initItem.size and
+                val.price == initItem.price):
                 found = True
                 if (len(cursorIndex) != 0 and
                     numberSet == True and
@@ -81,8 +91,8 @@ class Main:
     def buildItemsList(self):
         self.orderList.delete(0, tk.END)
         for item in self.order:
-            txt = "{amount} {name} == {price}"
-            self.orderList.insert(tk.END, txt.format(amount=item.amount, name=item.name, price=item.total))
+            txt = "{amount} {size} {name} == {price:0.2f}"
+            self.orderList.insert(tk.END, txt.format(amount=item.amount,size=item.size, name=item.name, price=item.total))
                     
                     
         self.orderList.selection_set(0)

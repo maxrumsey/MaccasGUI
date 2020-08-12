@@ -60,10 +60,18 @@ def base(inputFrame, manager):
     def getShowPricesButton():
         manager.gui.showPrices()
 
+    def setSize(level):
+        def func():
+            manager.itemSize = level
+
+        return func
+
     # Size Categories
-    tk.Button(sizeBoard, width=8, height=4, text="Small").pack(side=tk.LEFT)
-    tk.Button(sizeBoard, width=8, height=4, text="Medium").pack(side=tk.LEFT)
-    tk.Button(sizeBoard, width=8, height=4, text="Large").pack(side=tk.LEFT)
+    tk.Button(sizeBoard, width=8, height=4, text="Small", command=setSize(0)).pack(side=tk.LEFT)
+    tk.Button(sizeBoard, width=8, height=4, text="Medium", command=setSize(1)).pack(side=tk.LEFT)
+    tk.Button(sizeBoard, width=8, height=4, text="Large", command=setSize(2)).pack(side=tk.LEFT)
+
+
     for x in range(0, 3):
         tk.Button(sizeBoard, text="", width=8, height=4).pack(side=tk.LEFT)
     tk.Button(sizeBoard, width=8, height=4, text="Show\nPrices", command=getShowPricesButton).pack(side=tk.LEFT)
