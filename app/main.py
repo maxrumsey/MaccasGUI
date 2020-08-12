@@ -6,6 +6,7 @@ sys.path.append('..')
 # pylint: disable=import-error
 from gui import base
 from gui.cats import coffee
+from gui.cats import burger
 
 sizeEnum = [
     ("Small", 0.9),
@@ -34,7 +35,7 @@ class Main:
         if type == "Coffee":
             coffee.set(self, self.window.children['frameInput'].children['leftFrame'].children['itemBoard'])
         elif type == "Lunch":
-            print(1)
+            burger.set(self, self.window.children['frameInput'].children['leftFrame'].children['itemBoard'])
         elif type == "Dessert":
             print(1)
         elif type == "Condiments":
