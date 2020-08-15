@@ -9,6 +9,9 @@ def mainGUI(window, manager):
     inputFrame = tk.Frame(window, width=800, height=1000, name="frameInput", bg="green")
     inputFrame.pack(side=tk.LEFT, anchor='nw')
 
+    paymentFrame = tk.Frame(window, width=800, height=1000, name="framePayment", bg="red")
+
+
     # Order Frames
     orderFrame.pack_propagate(0)
 
@@ -17,4 +20,5 @@ def mainGUI(window, manager):
 
     # Input Frames
     inputFrameManager.base(inputFrame, manager)
+
 

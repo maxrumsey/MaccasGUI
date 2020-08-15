@@ -76,7 +76,7 @@ def base(inputFrame, manager):
         tk.Button(sizeBoard, text="", width=8, height=4).pack(side=tk.LEFT)
     tk.Button(sizeBoard, width=8, height=4, text="Show\nPrices", command=getShowPricesButton).pack(side=tk.LEFT)
     tk.Button(sizeBoard, width=8, height=4, text="Manager", highlightbackground="red", fg="green").pack(side=tk.LEFT)
-    tk.Button(sizeBoard, width=16, height=4, text="Take\nOut", highlightbackground="red", fg="green").pack(side=tk.LEFT)
+    tk.Button(sizeBoard, width=16, height=4, text="Pay", command=manager.pay, highlightbackground="red", fg="green").pack(side=tk.LEFT)
 
 
         

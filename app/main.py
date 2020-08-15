@@ -1,6 +1,7 @@
 import sys
 import tkinter as tk
 from app import item
+from app import payment
 sys.path.append('..')
 
 # pylint: disable=import-error
@@ -25,6 +26,7 @@ class Main:
         self.order = []
         self.orderList = None
         self.gui = None
+        self.paymentWindow = None
 
     def start(self):
         base.mainGUI(self.window, self)
@@ -119,5 +121,8 @@ class Main:
 
             listBox.selection_clear(first=True)
             listBox.selection_set(index)
+    
+    def pay(self):
+        self.paymentWindow = payment.PaymentWindow(self, self.window.children['framePayment'])
         
         
