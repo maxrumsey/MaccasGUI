@@ -105,8 +105,11 @@ class Main:
     
     def voidItemPress(self):
         listBox = self.orderList
-        index = listBox.curselection()[0]
+        if (len(listBox.curselection()) == 0):
+            return
 
+        index = listBox.curselection()[0]
+        
         if index != None:
             order = self.order[index]
             amount = order.amount
@@ -123,6 +126,15 @@ class Main:
             listBox.selection_set(index)
     
     def pay(self):
+        self.getTotal()
+        if len(self.order) == 0:
+            return
         self.paymentWindow = payment.PaymentWindow(self, self.window.children['framePayment'])
         
+    def getTotal(self):
+        total = 0
+        for order in self.order:
+            total += order.total
+
+        return total
         

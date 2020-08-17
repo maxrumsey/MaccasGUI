@@ -6,4 +6,7 @@ class GUI:
         self.manager = manager
         
         paymentFrameManager.base(frame, manager)
+
+        frame.pack()
         
+    
