@@ -9,7 +9,7 @@ def mainGUI(window, manager):
     inputFrame = tk.Frame(window, width=800, height=1000, name="frameInput", bg="green")
     inputFrame.pack(side=tk.LEFT, anchor='nw')
 
-    paymentFrame = tk.Frame(window, width=800, height=1000, name="framePayment", bg="red")
+    tk.Frame(window, width=800, height=1000, name="framePayment", bg="red")
 
 
     # Order Frames

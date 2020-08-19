@@ -137,4 +137,11 @@ class Main:
             total += order.total
 
         return total
+
+    def finishOrder(self):
+        self.order = None
+        self.orderList = None
+        self.itemSize = 1
+        self.buildItemsList()
+    
         
