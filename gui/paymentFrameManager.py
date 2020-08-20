@@ -48,10 +48,10 @@ def base(paymentFrame, paymentManager):
         exactRow.pack()
         for col in range(0, 2):
             amount = exactChangeText[row][col]
-            tk.Button(exactRow, text="$" + str(amount), command=exactCash(amount)).pack(side=tk.LEFT)
+            tk.Button(exactRow, text="$" + str(amount), height=5, width=18, command=exactCash(amount)).pack(side=tk.LEFT)
     
-    keyPadText = tk.Label(keypadFrame, text="Tendered: $0.00\nRemaining: $0.00\nEntered: ")
-    keyPadText.pack()
+    keyPadText = tk.Label(keypadFrame, text="Tendered: $0.00\nRemaining: $0.00\nEntered: ", font=("Helvetica", 20, "bold"), justify="left", anchor="w")
+    keyPadText.pack(fill="both")
 
     paymentManager.registerKeyPad(keyPadText)
 
@@ -63,18 +63,18 @@ def base(paymentFrame, paymentManager):
             final = 4
         for col in range(0, final):
             text = keyPadTextArr[row][col]
-            tk.Button(rowFrame, text=str(text), command=keyPadPress(text)).pack(side=tk.LEFT)
+            tk.Button(rowFrame, text=str(text), height=6, width=int(36/final), command=keyPadPress(text)).pack(side=tk.LEFT)
     
     # Receipt
-    recChange = tk.Label(receiptFrame, text="Change:\n")
+    recChange = tk.Label(receiptFrame, text="Change:\n", width=36, font=("Helvetica", 40, "bold"), justify="left", anchor="w")
     recChange.pack()
     paymentManager.changeLabel = recChange
 
-    recLabel = tk.Label(receiptFrame, text="Sales Receipt:\n")
+    recLabel = tk.Label(receiptFrame, text="Sales Receipt:\n", width=45, font=("Helvetica", 20, "bold"), justify="left", anchor="nw", height=23)
     recLabel.pack()
     paymentManager.receiptLabel = recLabel
 
-    recModify = tk.Button(receiptFrame, text="Modify Order", command=paymentManager.modify)
+    recModify = tk.Button(receiptFrame, text="Modify Order", width=45, height=5, command=paymentManager.modify)
     recModify.pack()
 
 
