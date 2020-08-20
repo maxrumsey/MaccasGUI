@@ -1,4 +1,5 @@
 import sys
+import tkinter as tk
 sys.path.append('..')
 from gui import paymentGUI
 
@@ -7,6 +8,9 @@ class PaymentWindow:
         self.manager = manager
         self.frame = frame
 
+        self.changeLabel = None
+        self.receiptLabel = None
+        
         self.hideMain()
         self.gui = paymentGUI.GUI(frame, self)
         self.tendered = 0
@@ -21,6 +25,8 @@ class PaymentWindow:
 
     def hideMain(self):
         self.manager.window.children['frameInput'].pack_forget()
+    def showMain(self):
+        self.manager.window.children['frameInput'].pack(side=tk.LEFT, anchor='nw')
 
     def tender(self, amount):
         if self.frozen:
@@ -57,10 +63,11 @@ class PaymentWindow:
         self.buildKeyPadScreen()
 
     def enter(self):
+        print(1)
         if self.frozen:
             self.manager.finishOrder()
             self.manager.closePayment()
-        if len(self.keyPadInput) == 0:
+        elif len(self.keyPadInput) == 0:
             self.tender(self.total)
         else:
             amount = 0
@@ -74,7 +81,10 @@ class PaymentWindow:
             self.tender(amount)
     
     def modify(self):
-        print(1)
+        if (self.frozen):
+            self.manager.finishOrder()
+
+        self.manager.closePayment()
             
 
 

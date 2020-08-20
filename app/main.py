@@ -139,9 +139,15 @@ class Main:
         return total
 
     def finishOrder(self):
-        self.order = None
-        self.orderList = None
+        self.order = []
         self.itemSize = 1
         self.buildItemsList()
     
-        
+    def closePayment(self):
+        _widgets = self.paymentWindow.frame.winfo_children()
+        for i in _widgets:
+            if i.winfo_children():
+                i.destroy()
+        self.paymentWindow.frame.pack_forget()
+        self.paymentWindow.showMain()
+        self.paymentWindow = None

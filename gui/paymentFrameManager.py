@@ -23,15 +23,13 @@ def base(paymentFrame, paymentManager):
 
     def keyPadPress(x):
         def func():
-            if paymentManager.frozen == True:
-                return
-
-            if isinstance(x, int) or x == ".":
-                paymentManager.keyPadInput += str(x)
-                paymentManager.buildKeyPadScreen()
-            elif x == "CANC":
-                paymentManager.cancel()
-            else:
+            if paymentManager.frozen == False:
+                if isinstance(x, int) or x == ".":
+                    paymentManager.keyPadInput += str(x)
+                    paymentManager.buildKeyPadScreen()
+                elif x == "CANC":
+                    paymentManager.cancel()
+            if x == "ETR":
                 paymentManager.enter()
                 
 
