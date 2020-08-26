@@ -22,19 +22,6 @@ def base(inputFrame, manager):
     numberInput = tk.Frame(inputFrame, width=800, height=100, name="numberInput", bg="blue")
     numberInput.pack()
 
-    orderCategories = tk.Frame(inputFrame, width=800, height=100, name="orderCat", bg="yellow")
-    orderCategories.pack()
-
-    # Food Categories
-    tk.Button(orderCategories, command=catChange("Coffee"), text="Coffee", width=8, height=4).pack(side=tk.LEFT)
-    tk.Button(orderCategories, command=catChange("Lunch"), text="Lunch", width=8, height=4).pack(side=tk.LEFT)
-    tk.Button(orderCategories, command=catChange("Dessert"), text="Dessert", width=8, height=4).pack(side=tk.LEFT)
-    tk.Button(orderCategories, command=catChange("Condiments"), text="Condiments", width=8, height=4).pack(side=tk.LEFT)
-    for x in range(0, 5):
-        tk.Button(orderCategories, text="", width=8, height=4).pack(side=tk.LEFT)
-
-    tk.Button(orderCategories, width=8, height=4, text="Void Line", command=manager.voidItemPress).pack(side=tk.LEFT)
-
     for x in range(0,10):
         tk.Button(numberInput, command=numButClick(x), text=str(x), width=8, height=4).pack(side=tk.LEFT)
     
@@ -49,8 +36,8 @@ def base(inputFrame, manager):
 
     # Special Categories
     tk.Button(specialBoard, width=8, height=4, text="Promo\nItem").pack()
-    tk.Button(specialBoard, width=8, height=4, text="Clear\nChoice").pack()
-    tk.Button(specialBoard, width=8, height=4, text="Special\nFunction").pack()
+    tk.Button(specialBoard, width=8, height=4, text="Void Line", command=manager.voidItemPress).pack()
+    tk.Button(specialBoard, width=8, height=4, text="Take Out").pack()
 
 
     sizeBoard = tk.Frame(inputFrame, width=800, height=200, name="sizeBoard", bg="blue")
@@ -67,13 +54,10 @@ def base(inputFrame, manager):
         return func
 
     # Size Categories
-    tk.Button(sizeBoard, width=8, height=4, text="Small", command=setSize(0)).pack(side=tk.LEFT)
-    tk.Button(sizeBoard, width=8, height=4, text="Medium", command=setSize(1)).pack(side=tk.LEFT)
-    tk.Button(sizeBoard, width=8, height=4, text="Large", command=setSize(2)).pack(side=tk.LEFT)
+    tk.Button(sizeBoard, width=16, height=4, text="Small", command=setSize(0)).pack(side=tk.LEFT)
+    tk.Button(sizeBoard, width=16, height=4, text="Medium", command=setSize(1)).pack(side=tk.LEFT)
+    tk.Button(sizeBoard, width=16, height=4, text="Large", command=setSize(2)).pack(side=tk.LEFT)
 
-
-    for x in range(0, 3):
-        tk.Button(sizeBoard, text="", width=8, height=4).pack(side=tk.LEFT)
     tk.Button(sizeBoard, width=8, height=4, text="Show\nPrices", command=getShowPricesButton).pack(side=tk.LEFT)
     tk.Button(sizeBoard, width=8, height=4, text="Manager", highlightbackground="red", fg="green").pack(side=tk.LEFT)
     tk.Button(sizeBoard, width=16, height=4, text="Pay", command=manager.pay, highlightbackground="red", fg="green").pack(side=tk.LEFT)
