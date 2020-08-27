@@ -8,11 +8,9 @@ def base(inputFrame, manager):
 
         return func
 
-    def catChange(type):
-        def func():
-            manager.setCat(type)
-
-        return func
+    def takeOut():
+        manager.takeOut = True
+        manager.buildItemsList()
 
     infoBoard = tk.Frame(inputFrame, width=800, height=100, name="infoBoard", bg="red")
     infoBoard.pack()
@@ -37,7 +35,7 @@ def base(inputFrame, manager):
     # Special Categories
     tk.Button(specialBoard, width=8, height=4, text="Promo\nItem").pack()
     tk.Button(specialBoard, width=8, height=4, text="Void Line", command=manager.voidItemPress).pack()
-    tk.Button(specialBoard, width=8, height=4, text="Take Out").pack()
+    tk.Button(specialBoard, width=8, height=4, text="Take Out", command=takeOut).pack()
 
 
     sizeBoard = tk.Frame(inputFrame, width=800, height=200, name="sizeBoard", bg="blue")

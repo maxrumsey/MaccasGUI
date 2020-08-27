@@ -14,7 +14,7 @@ class PaymentWindow:
         self.hideMain()
         self.gui = paymentGUI.GUI(frame, self)
         self.tendered = 0
-        self.total = manager.getTotal()
+        self.total = manager.total
         self.frozen = False
         self.keyPadInput = ""
         self.remaining = self.total

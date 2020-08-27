@@ -2,6 +2,7 @@ import sys
 import tkinter as tk
 from app import item
 from app import payment
+from app import dayMeta
 sys.path.append('..')
 
 # pylint: disable=import-error
@@ -27,6 +28,10 @@ class Main:
         self.orderList = None
         self.gui = None
         self.paymentWindow = None
+        self.orderDetailTable = {}
+        self.dayMeta = dayMeta.DayMeta(self)
+        self.total = 0
+        self.takeOut = False
 
     def start(self):
         base.mainGUI(self.window, self)
@@ -83,10 +88,12 @@ class Main:
                     initItem.setAmount(initItem.amount + val.amount)
 
                 self.order.remove(val)
-                self.order.insert(inx, initItem)
+                if (initItem.amount != 0):
+                    self.order.insert(inx, initItem)
                 break
             
-        if not found:
+        if (not found and 
+            initItem.amount != 0):
             self.order.append(initItem) 
         
         self.buildItemsList()
@@ -96,9 +103,29 @@ class Main:
         for item in self.order:
             txt = "{amount} {size} {name} == {price:0.2f}"
             self.orderList.insert(tk.END, txt.format(amount=item.amount,size=item.size, name=item.name, price=item.total))
-                    
+        
+        if (self.takeOut == True):
+            self.orderList.insert(tk.END, "---Take Out---")
                     
         self.orderList.selection_set(0)
+
+        subtotal = self.getTotal()
+        GST = (subtotal / .9) * .1
+        surcharge = 0
+        if (self.takeOut == True):
+            surcharge = (subtotal + GST) * 0.05
+        self.total = subtotal + GST + surcharge
+
+        self.setOrderTable("SubTotal", "${0:0.2f}".format(subtotal))
+        self.setOrderTable("Surcharge", "${0:0.2f}".format(surcharge))
+        self.setOrderTable("GST", "${0:0.2f}".format(GST))
+        self.setOrderTable("Order #", self.dayMeta.getOrderNum())
+        self.setOrderTable("Total", "${0:0.2f}".format(self.total))
+        self.setOrderTable("Daily Total", "${0:0.2f}".format(self.dayMeta.dailyTotal))
+
+    def setOrderTable(self, key, value):
+        self.orderDetailTable[key].delete(0, tk.END)
+        self.orderDetailTable[key].insert(0, value)
 
     def voidItem(self, index):
         self.order.pop(index)
@@ -109,7 +136,11 @@ class Main:
             return
 
         index = listBox.curselection()[0]
-        
+        if (self.takeOut == True and index == len(self.order)):
+            self.takeOut = False
+            self.buildItemsList()
+            return
+
         if index != None:
             order = self.order[index]
             amount = order.amount
@@ -126,10 +157,10 @@ class Main:
             listBox.selection_set(index)
     
     def pay(self):
-        self.getTotal()
         if len(self.order) == 0:
             return
         self.paymentWindow = payment.PaymentWindow(self, self.window.children['framePayment'])
+        self.buildItemsList()
         
     def getTotal(self):
         total = 0
@@ -139,6 +170,8 @@ class Main:
         return total
 
     def finishOrder(self):
+        self.dayMeta.orderNumber += 1
+        self.dayMeta.dailyTotal += self.total
         self.order = []
         self.itemSize = 1
         self.buildItemsList()
