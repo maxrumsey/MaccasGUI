@@ -36,8 +36,11 @@ class GUIManager:
                 button = row.children[btext]
                 text = self.getTextOfButton(button)
                 
+                if (text == ""):
+                    continue
+
                 if not self.prices:
-                    button.configure(text =  text + "\n$15.50")
+                    button.configure(text =  text + "\n${0:.2f}".format(self.manager.prices[text]))
 
                 else:
                     button.configure(text =  text.split("\n")[0])

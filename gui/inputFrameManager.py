@@ -33,7 +33,7 @@ def base(inputFrame, manager):
     specialBoard.pack(side=tk.RIGHT)
 
     # Special Categories
-    tk.Button(specialBoard, width=8, height=4, text="Promo\nItem").pack()
+    tk.Button(specialBoard, width=8, height=4, text="Promo\nItem", command=manager.promo).pack()
     tk.Button(specialBoard, width=8, height=4, text="Void Line", command=manager.voidItemPress).pack()
     tk.Button(specialBoard, width=8, height=4, text="Take Out", command=takeOut).pack()
 

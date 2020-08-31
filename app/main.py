@@ -33,7 +33,8 @@ class Main:
         self.total = 0
         self.takeOut = False
 
-    def start(self):
+    def start(self, prices):
+        self.prices = prices
         base.mainGUI(self.window, self)
         self.setCat("Coffee")
         self.window.mainloop()
@@ -54,7 +55,7 @@ class Main:
         if not name:
             return
         
-        initItem = item.Item(name, 1, 15.50 * sizeEnum[self.itemSize][1], sizeEnum[self.itemSize][0])
+        initItem = item.Item(name, 1, self.prices[name] * sizeEnum[self.itemSize][1], sizeEnum[self.itemSize][0])
 
         self.itemSize = 1
 
@@ -97,7 +98,21 @@ class Main:
             self.order.append(initItem) 
         
         self.buildItemsList()
-        
+    
+    def getTotals(self):
+        subtotal = self.getTotal()
+        GST = (subtotal / .9) * .1
+        surcharge = 0
+        if (self.takeOut == True):
+            surcharge = (subtotal + GST) * 0.05
+        self.total = self.round_to(subtotal + GST + surcharge, 0.05)
+
+        return (subtotal, GST, surcharge, self.total)
+
+    def round_to(self, n, precision):
+        correction = 0.5 if n >= 0 else -0.5
+        return int( n/precision+correction ) * precision
+
     def buildItemsList(self):
         self.orderList.delete(0, tk.END)
         for item in self.order:
@@ -109,18 +124,13 @@ class Main:
                     
         self.orderList.selection_set(0)
 
-        subtotal = self.getTotal()
-        GST = (subtotal / .9) * .1
-        surcharge = 0
-        if (self.takeOut == True):
-            surcharge = (subtotal + GST) * 0.05
-        self.total = subtotal + GST + surcharge
+        totals = self.getTotals()
 
-        self.setOrderTable("SubTotal", "${0:0.2f}".format(subtotal))
-        self.setOrderTable("Surcharge", "${0:0.2f}".format(surcharge))
-        self.setOrderTable("GST", "${0:0.2f}".format(GST))
+        self.setOrderTable("SubTotal", "${0:0.2f}".format(totals[0]))
+        self.setOrderTable("Surcharge", "${0:0.2f}".format(totals[2]))
+        self.setOrderTable("GST", "${0:0.2f}".format(totals[1]))
         self.setOrderTable("Order #", self.dayMeta.getOrderNum())
-        self.setOrderTable("Total", "${0:0.2f}".format(self.total))
+        self.setOrderTable("Total", "${0:0.2f}".format(totals[3]))
         self.setOrderTable("Daily Total", "${0:0.2f}".format(self.dayMeta.dailyTotal))
 
     def setOrderTable(self, key, value):
@@ -185,3 +195,19 @@ class Main:
         self.paymentWindow.frame.pack_forget()
         self.paymentWindow.showMain()
         self.paymentWindow = None
+
+    def promo(self):
+        listBox = self.orderList
+
+        if (len(listBox.curselection()) == 0):
+            return
+
+
+        index = listBox.curselection()[0]
+
+        if (len(self.order) == index):
+            return
+
+        item = self.order[index]
+        item.promo()
+        self.buildItemsList()

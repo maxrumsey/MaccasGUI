@@ -47,7 +47,30 @@ class PaymentWindow:
     def openDrawer(self):
         self.frozen = True
         self.changeLabel.configure(text="Change:\n${0:.2f}".format(self.tendered - self.total))
-        self.receiptLabel.configure(text="Sales Receipt:\nTODO")
+        receipt = '''CAFE AU LAIT
+=======================================
+42 King Edward Rd, Osborne Park WA 6017
+0416 376 667
+Order Number: {ordernum}
+=======================================
+'''.format(ordernum=self.manager.dayMeta.getOrderNum())
+
+        for item in self.manager.order:
+            receipt += "{0:<2} {1:<20} == ${2:.2f}\n".format(item.amount, item.size + " " + item.name, item.total)
+        
+        totals = self.manager.getTotals()
+
+        receipt +='''=======================================
+SubTotal:  ${:.2f}
+GST:       ${:.2f}
+Surcharge: ${:.2f}
+Total:     ${:.2f}
+
+Tendered:  ${:.2f}
+Change:    ${:.2f}
+=======================================
+Thanks for choosing Cafe Au Lait!'''.format(totals[0], totals[1], totals[2], totals[3], self.tendered, self.tendered - self.total)
+        self.receiptLabel.configure(text=receipt, font='TkFixedFont')
     
     def buildKeyPadScreen(self):
         self.keyPadText.configure(text=

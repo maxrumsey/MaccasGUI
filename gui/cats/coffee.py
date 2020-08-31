@@ -7,8 +7,8 @@ def set(manager, itemFrame):
     manager.gui = gui
 
     # Lane1
-    gui.addItem(0, "Cappucino")
-    gui.addItem(0, "")
+    gui.addItem(0, "Cappuccino")
+    gui.addItem(0, "Espresso")
     gui.addItem(0, "")
     gui.addItem(0, "")
     gui.addItem(0, "")
@@ -29,7 +29,7 @@ def set(manager, itemFrame):
     gui.addItem(1, "")
 
     # Lane3
-    gui.addItem(2, "Mocha")
+    gui.addItem(2, "Iced Coffee")
     gui.addItem(2, "")
     gui.addItem(2, "")
     gui.addItem(2, "")
