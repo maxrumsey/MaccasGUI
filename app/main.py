@@ -174,6 +174,7 @@ class Main:
         self.dayMeta.dailyTotal += self.total
         self.order = []
         self.itemSize = 1
+        self.takeOut = False
         self.buildItemsList()
     
     def closePayment(self):
