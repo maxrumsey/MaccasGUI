@@ -66,11 +66,8 @@ def base(paymentFrame, paymentManager):
             tk.Button(rowFrame, text=str(text), height=6, width=int(36/final), command=keyPadPress(text)).pack(side=tk.LEFT)
     
     # Receipt
-    recChange = tk.Label(receiptFrame, text="Change:\n", width=36, font=("Helvetica", 40, "bold"), justify="left", anchor="w")
-    recChange.pack()
-    paymentManager.changeLabel = recChange
 
-    recLabel = tk.Label(receiptFrame, text="Sales Receipt:\n", width=45, font=("Helvetica", 20, "bold"), justify="left", anchor="nw", height=23)
+    recLabel = tk.Label(receiptFrame,width=45, justify="left", anchor="nw", height=43)
     recLabel.pack()
     paymentManager.receiptLabel = recLabel
 

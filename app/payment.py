@@ -46,7 +46,7 @@ class PaymentWindow:
 
     def openDrawer(self):
         self.frozen = True
-        self.changeLabel.configure(text="Change:\n${0:.2f}".format(self.tendered - self.total))
+        #self.changeLabel.configure(text="Change:\n${0:.2f}".format(self.tendered - self.total))
         receipt = '''CAFE AU LAIT
 =======================================
 42 King Edward Rd, Osborne Park WA 6017
@@ -74,7 +74,7 @@ Thanks for choosing Cafe Au Lait!'''.format(totals[0], totals[1], totals[2], tot
     
     def buildKeyPadScreen(self):
         self.keyPadText.configure(text=
-            "Tendered: ${0:.2f}\nRemaining: ${1:.2f}\n Entered: {2}".format(
+            "  Tendered: ${0:.2f}\n  Remaining: ${1:.2f}\n  Entered: {2}".format(
             self.tendered, self.remaining, self.keyPadInput)
         )
     

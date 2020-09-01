@@ -3,22 +3,23 @@ from gui import inputFrameManager
 
 def mainGUI(window, manager):
     # Base GUIs
-    orderFrame = tk.Frame(window, width=400, height=1000, name="frameOrder", bg="red")
+    orderFrame = tk.Frame(window, width=400, height=1000, name="frameOrder")
     orderFrame.pack(side=tk.LEFT)
 
-    inputFrame = tk.Frame(window, width=800, height=1000, name="frameInput", bg="green")
+    inputFrame = tk.Frame(window, width=800, height=1000, name="frameInput")
     inputFrame.pack(side=tk.LEFT, anchor='nw')
 
-    tk.Frame(window, width=800, height=1000, name="framePayment", bg="red")
-
+    tk.Frame(window, width=800, height=1000, name="framePayment")
+    #"1163x730"
+    tk.Frame(window, width=1163, height=730, name="frameManager")
 
     # Order Frames
     orderFrame.pack_propagate(0)
 
-    manager.orderList = tk.Listbox(orderFrame, selectmode=tk.SINGLE, name='orderList', width=45, height=37)
+    manager.orderList = tk.Listbox(orderFrame, selectmode=tk.SINGLE, name='orderList', width=45, height=33)
     manager.orderList.pack()
 
-    infoBox = tk.Frame(orderFrame, width=400)
+    infoBox = tk.Frame(orderFrame)
     infoBox.pack()
 
     itemArray = [

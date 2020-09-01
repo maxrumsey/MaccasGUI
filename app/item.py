@@ -1,11 +1,12 @@
 class Item():
-    def __init__(self, name, number, price, size):
+    def __init__(self, name, number, price, size, sizeInt):
         self.name = name
         self.amount = number
         self.price = price
         self.size = size
         self.promoNum = 0
         self.setAmount(number)
+        self.sizeInt = sizeInt
 
     def setAmount(self, number):
         self.amount = number

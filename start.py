@@ -16,8 +16,8 @@ with open('config.csv') as configCSV:
         prices[row[0]] = (float(row[1]))
 
 
-main = main.Main(window)
-main.start(prices)
+main = main.Main(window, prices)
+main.start()
 
 
 

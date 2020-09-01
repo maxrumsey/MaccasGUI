@@ -2,6 +2,7 @@ import sys
 import tkinter as tk
 from app import item
 from app import payment
+from app import manager
 from app import dayMeta
 sys.path.append('..')
 
@@ -17,11 +18,10 @@ sizeEnum = [
 ]
 
 class Main:
-    def __init__(self, window):
+    def __init__(self, window, prices):
+        self.prices = prices
         self.window = window
-        self.window.geometry("1163x800")
-        self.window.minsize(1163, 800)
-        self.window.maxsize(1163, 800)
+        self.window.geometry("1163x730")
         self.itemSize = 1
         self.numberInput = ""
         self.order = []
@@ -33,29 +33,16 @@ class Main:
         self.total = 0
         self.takeOut = False
 
-    def start(self, prices):
-        self.prices = prices
+    def start(self):
         base.mainGUI(self.window, self)
-        self.setCat("Coffee")
+        coffee.set(self, self.window.children['frameInput'].children['leftFrame'].children['itemBoard'])
         self.window.mainloop()
-
-    def setCat(self, type):
-        if type == "Coffee":
-            coffee.set(self, self.window.children['frameInput'].children['leftFrame'].children['itemBoard'])
-        elif type == "Lunch":
-            burger.set(self, self.window.children['frameInput'].children['leftFrame'].children['itemBoard'])
-        elif type == "Dessert":
-            print(1)
-        elif type == "Condiments":
-            print(1)
-        else:
-            print("Unknown Type: " + str(type))
 
     def addItem(self, name):
         if not name:
             return
         
-        initItem = item.Item(name, 1, self.prices[name] * sizeEnum[self.itemSize][1], sizeEnum[self.itemSize][0])
+        initItem = item.Item(name, 1, self.prices[name] * sizeEnum[self.itemSize][1], sizeEnum[self.itemSize][0], self.itemSize)
 
         self.itemSize = 1
 
@@ -171,6 +158,9 @@ class Main:
             return
         self.paymentWindow = payment.PaymentWindow(self, self.window.children['framePayment'])
         self.buildItemsList()
+    
+    def manager(self):
+        self.managerWindow = manager.ManagerWindow(self, self.window.children['frameManager'])
         
     def getTotal(self):
         total = 0
@@ -180,6 +170,8 @@ class Main:
         return total
 
     def finishOrder(self):
+        for item in self.order:
+            self.dayMeta.log[item.name][item.sizeInt] += item.amount
         self.dayMeta.orderNumber += 1
         self.dayMeta.dailyTotal += self.total
         self.order = []
