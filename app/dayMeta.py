@@ -3,6 +3,9 @@ class DayMeta:
         self.manager = manager
         self.orderNumber = 1
         self.dailyTotal = 0
+        self.dinein = 0
+        self.takeaway = 0
+        self.gst = 0
         self.log = {}
 
         for item in self.manager.prices:

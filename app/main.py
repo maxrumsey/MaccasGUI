@@ -170,6 +170,15 @@ class Main:
         return total
 
     def finishOrder(self):
+        gst = self.getTotals()[1]
+        if (self.takeOut):
+            self.dayMeta.takeaway += 1
+        else:
+            self.dayMeta.dinein += 1
+        
+        self.dayMeta.gst += gst
+
+
         for item in self.order:
             self.dayMeta.log[item.name][item.sizeInt] += item.amount
         self.dayMeta.orderNumber += 1
