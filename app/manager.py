@@ -1,5 +1,6 @@
 import sys
 import tkinter as tk
+from app import test
 sys.path.append('..')
 from gui import managerGUI
 
@@ -27,4 +28,6 @@ class ManagerWindow:
         self.showMain()
 
     def test(self):
-        print(1)
+        self.testMod = test.Tester(self, './order_out.csv')
+        self.testMod.readCSV('./order_in.csv')
+        self.testMod.loop()

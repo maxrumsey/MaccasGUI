@@ -1,0 +1,4 @@
+ORDER_ID,TYPE,ITEM_1,QTY_1,ITEM_2,QTY_2,ITEM_3,QTY_3,ITEM_4,QTY_4,AMT_TENDERED
+1,Dine-In,Cappuccino,2,Espresso,2,Latte,1,Iced Coffee,2,20
+2,Take-Away,Espresso,4,Iced Coffee,2,,,,,20
+3,Take-Away,Latte,1,Cappuccino,1,Espresso,3,,,15

@@ -1,4 +1,13 @@
 import tkinter as tk
+import pwd
+import os
+from datetime import datetime
+
+sizeEnum = (
+    "Small",
+    "Medium",
+    "Large"
+)
 
 def base(inputFrame, manager):
 
@@ -12,10 +21,33 @@ def base(inputFrame, manager):
         manager.takeOut = True
         manager.buildItemsList()
 
-    infoBoard = tk.Frame(inputFrame, width=800, height=100, name="infoBoard", bg="red")
+    infoBoard = tk.Frame(inputFrame, width=800, height=100, name="infoBoard")
     infoBoard.pack()
 
-    tk.Label(infoBoard, text="Maxim Rumsey").pack()
+    padAmount = 50
+
+    def get_username():
+        return pwd.getpwuid( os.getuid() )[ 0 ]
+
+    tk.Label(infoBoard, text=get_username()).pack(side=tk.LEFT, padx=padAmount)
+    sizeLabel = tk.Label(infoBoard, text="Size", name="size")
+    sizeLabel.pack(side=tk.LEFT, padx=padAmount)
+
+    amountLabel = tk.Label(infoBoard, text="Amount", name="amount")
+    amountLabel.pack(side=tk.LEFT, padx=padAmount)
+
+    timeLabel = tk.Label(infoBoard, text="Time", name="time")
+    timeLabel.pack(side=tk.LEFT, padx=padAmount)
+
+    def updateInfo():
+        time = datetime.now()
+        timeLabel.configure(text=str(time).split('.')[0])
+        amountLabel.configure(text=str(manager.numberInput))
+        sizeLabel.configure(text=sizeEnum[manager.itemSize])
+
+        manager.window.after(200, updateInfo)
+
+    updateInfo()
 
     numberInput = tk.Frame(inputFrame, width=800, height=100, name="numberInput", bg="blue")
     numberInput.pack()

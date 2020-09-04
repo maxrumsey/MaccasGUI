@@ -129,6 +129,7 @@ class Main:
     
     def voidItemPress(self):
         listBox = self.orderList
+        self.numberInput = ""
         if (len(listBox.curselection()) == 0):
             return
 
@@ -152,6 +153,7 @@ class Main:
 
             listBox.selection_clear(first=True)
             listBox.selection_set(index)
+
     
     def pay(self):
         if len(self.order) == 0:
