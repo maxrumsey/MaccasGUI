@@ -29,5 +29,5 @@ class ManagerWindow:
 
     def test(self):
         self.testMod = test.Tester(self, './order_out.csv')
-        self.testMod.readCSV('./order_in.csv')
+        self.testMod.readCSV('./daily_orders.csv')
         self.testMod.loop()

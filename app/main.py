@@ -88,7 +88,7 @@ class Main:
     
     def getTotals(self):
         subtotal = self.getTotal()
-        GST = (subtotal / .9) * .1
+        GST = (subtotal) * .1
         surcharge = 0
         if (self.takeOut == True):
             surcharge = (subtotal + GST) * 0.05
