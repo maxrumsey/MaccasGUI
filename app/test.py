@@ -1,11 +1,18 @@
+"""Tester Class
+
+This class handles testing of the program.
+"""
+
 import csv
 
 class Tester:
+    """This class is responsible for running test mode"""
+
     def __init__(self, manager, output):
         self.manager = manager
-        self.bigManager = manager.manager
+        self.big_manager = manager.manager
         self.order = []
-        self.outputFileName = output
+        self.output_filename = output
         self.log = {
             "ORDERS_COUNT": 0,
             "DINE-IN": 0,
@@ -18,94 +25,90 @@ class Tester:
             "GST_TOTAL": 0,
             "DAILY_INCOME": 0
         }
-        self.orderLog = []
+        self.order_log = []
 
-    def readCSV(self, fileName):
-        with open(fileName, mode='r') as csv_file:
+    def read_csv(self, file_name):
+        """This function reads the CSV file and writes the rows to the order array"""
+
+        with open(file_name, mode='r') as csv_file:
             csv_reader = csv.DictReader(csv_file)
             for row in csv_reader:
                 self.order.append(row)
 
-    def round(self, input):
-        return self.bigManager.round_to(input, 0.05)
+    def round(self, amount):
+        """Rounds a float to 5 cents"""
+
+        return self.big_manager.round_to(amount, 0.05)
 
     def writeCSV(self):
-        with open(self.outputFileName, mode='w') as outputFile:
-            outputWriter = csv.DictWriter(outputFile, fieldnames = "ORDER_ID,TYPE,ITEM_1,QTY_1,EXGST_1,ITEM_2,QTY_2,EXGST_2,ITEM_3,QTY_3,EXGST_3,ITEM_4,QTY_4,EXGST_4,CUPS,GST,TAX,ORDER_TOTAL,AMT_TENDERED,CHANGE".split(','))
-            outputWriter.writeheader()
-            for row in self.orderLog:
-                outputWriter.writerow(row)
-            outputWriter = csv.DictWriter(outputFile, fieldnames = "ORDERS_COUNT,DINE-IN,TAKE-AWAY,CAPPUCCINO_COUNT,ESPRESSO_COUNT,LATTE_COUNT,ICEDCOFFEE_COUNT,CUPS_COUNT,GST_TOTAL,DAILY_INCOME".split(','))
-            outputWriter.writeheader()
-            outputWriter.writerow(self.log)
+        """Writes the order information the the output CSV file"""
+
+        with open(self.output_filename, mode='w') as output_file:
+            order_output_str = "ORDER_ID,TYPE,ITEM_1,QTY_1,EXGST_1,ITEM_2,QTY_2,EXGST_2,ITEM_3,QTY_3,EXGST_3,ITEM_4,QTY_4,EXGST_4,CUPS,GST,TAX,ORDER_TOTAL,AMT_TENDERED,CHANGE"
+            output_writer = csv.DictWriter(output_file, fieldnames=order_output_str.split(','))
+            output_writer.writeheader()
+            for row in self.order_log:
+                output_writer.writerow(row)
+
+            daily_total_str = "ORDERS_COUNT,DINE-IN,TAKE-AWAY,CAPPUCCINO_COUNT,ESPRESSO_COUNT,LATTE_COUNT,ICEDCOFFEE_COUNT,CUPS_COUNT,GST_TOTAL,DAILY_INCOME"
+            output_writer = csv.DictWriter(output_file, fieldnames=daily_total_str.split(','))
+            output_writer.writeheader()
+            output_writer.writerow(self.log)
 
     def loop(self):
+        """Loops through the orders and runs processes"""
+
         for order in self.order:
             self.log['ORDERS_COUNT'] += 1
-            dinein = True
+            dine_in = True
             if order['TYPE'] == "Dine-In":
                 self.log['DINE-IN'] += 1
             else:
-                dinein = False
+                dine_in = False
                 self.log['TAKE-AWAY'] += 1
 
             subtotal = 0
             cups = 0
 
-            orderLogEntry = {
+            order_log_entry = {
                 "ORDER_ID": order['ORDER_ID'],
-                "TYPE": ("Dine-In" if dinein == True else "Take-Away"),
-                
+                "TYPE": ("Dine-In" if dine_in else "Take-Away"),
             }
 
-            for x in range(1, 5):
-                name = order["ITEM_" + str(x)]
+            for number in range(1, 5):
+                name = order["ITEM_" + str(number)]
 
-                if name == "":
-                    continue
+                if name != "":
+                    amount = int(order["QTY_" + str(number)])
 
-                amount = int(order["QTY_" + str(x)])
+                    self.log[name.replace(" ", "").upper() + "_COUNT"] += amount
+                    cups += amount
 
-                self.log[name.replace(" ", "").upper() + "_COUNT"] += amount
-                cups += amount
-                
+                    price = self.manager.manager.prices[name] * amount
+                    subtotal += price
 
-                price = self.manager.manager.prices[name] * amount
-                subtotal += price
+                    order_log_entry["ITEM_" + str(number)] = name
+                    order_log_entry["QTY_" + str(number)] = amount
+                    order_log_entry["EXGST_" + str(number)] = price
 
-                orderLogEntry["ITEM_" + str(x)] = name
-                orderLogEntry["QTY_" + str(x)] = amount
-                orderLogEntry["EXGST_" + str(x)] = price
-
-
-        
-            GST = (subtotal) * .1
+            gst = subtotal * .1
             surcharge = 0
-            if (dinein == False):
-                surcharge = (subtotal + GST) * 0.05
+            if not dine_in:
+                surcharge = (subtotal + gst) * 0.05
 
-            total = self.round(subtotal + GST + surcharge)
+            total = self.round(subtotal + gst + surcharge)
 
-            self.log['GST_TOTAL'] += self.round(GST)
+            self.log['GST_TOTAL'] += self.round(gst)
             self.log['DAILY_INCOME'] += total
             self.log['CUPS_COUNT'] += cups
 
-            orderLogEntry["CUPS"] = cups
-            orderLogEntry["GST"] = "{:.2f}".format(GST)
-            orderLogEntry["TAX"] = "{:.2f}".format(surcharge)
-            orderLogEntry["ORDER_TOTAL"] = "{:.2f}".format(self.round(total))
-            orderLogEntry["AMT_TENDERED"] = order["AMT_TENDERED"]
-            orderLogEntry["CHANGE"] = "{:.2f}".format(float(order["AMT_TENDERED"]) - total)
+            order_log_entry["CUPS"] = cups
+            order_log_entry["GST"] = "{:.2f}".format(gst)
+            order_log_entry["TAX"] = "{:.2f}".format(surcharge)
+            order_log_entry["ORDER_TOTAL"] = "{:.2f}".format(self.round(total))
+            order_log_entry["AMT_TENDERED"] = order["AMT_TENDERED"]
+            order_log_entry["CHANGE"] = "{:.2f}".format(float(order["AMT_TENDERED"]) - total)
 
-            self.orderLog.append(orderLogEntry)
+            self.order_log.append(order_log_entry)
+
         self.writeCSV()
-            
-
-
-
-            
-
-            
-            
-
-    

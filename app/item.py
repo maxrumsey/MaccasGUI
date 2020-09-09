@@ -1,26 +1,38 @@
+"""Item
+
+This class stores information about each item in the order
+"""
+
 class Item():
-    def __init__(self, name, number, price, size, sizeInt):
+    """Contains information about each item in the order"""
+
+    def __init__(self, name, number, price, size, size_int):
         self.name = name
+        self.total = 0
         self.amount = number
         self.price = price
         self.size = size
-        self.promoNum = 0
-        self.setAmount(number)
-        self.sizeInt = sizeInt
+        self.promo_num = 0
+        self.set_amount(number)
+        self.size_int = size_int
 
-    def setAmount(self, number):
+    def set_amount(self, number):
+        """Changes the number of items present, in the Item class"""
+
         self.amount = number
 
-        self.total = number * self.price - self.promoNum * self.price
+        self.total = number * self.price - self.promo_num * self.price
 
-        if (self.total < 0):
+        if self.total < 0:
             self.total = 0
             return
-    
+
     def promo(self):
-        if (self.promoNum == self.amount):
+        """Increments the number of item's `promo-ed` by 1"""
+
+        if self.promo_num == self.amount:
             return
 
-        self.promoNum += 1
+        self.promo_num += 1
 
-        self.total = self.amount * self.price - self.promoNum * self.price
+        self.total = self.amount * self.price - self.promo_num * self.price

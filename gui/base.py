@@ -1,28 +1,32 @@
+"""This module handles the creation of the base POS layout"""
+
 import tkinter as tk
 from gui import inputFrameManager
 
-def mainGUI(window, manager):
-    # Base GUIs
-    orderFrame = tk.Frame(window, width=400, height=1000, name="frameOrder")
-    orderFrame.pack(side=tk.LEFT)
+def main_gui(window, manager):
+    """This function creates the top-most POS frames"""
 
-    inputFrame = tk.Frame(window, width=800, height=1000, name="frameInput")
-    inputFrame.pack(side=tk.LEFT, anchor='nw')
+    # Base GUIs
+    order_frame = tk.Frame(window, width=400, height=1000, name="frameOrder")
+    order_frame.pack(side=tk.LEFT)
+
+    input_frame = tk.Frame(window, width=800, height=1000, name="frameInput")
+    input_frame.pack(side=tk.LEFT, anchor='nw')
 
     tk.Frame(window, width=800, height=1000, name="framePayment")
     #"1163x730"
     tk.Frame(window, width=1163, height=730, name="frameManager")
 
     # Order Frames
-    orderFrame.pack_propagate(0)
+    order_frame.pack_propagate(0)
 
-    manager.orderList = tk.Listbox(orderFrame, selectmode=tk.SINGLE, name='orderList', width=45, height=33)
-    manager.orderList.pack()
+    manager.order_list = tk.Listbox(order_frame, selectmode=tk.SINGLE, name='orderList', width=45, height=33)
+    manager.order_list.pack()
 
-    infoBox = tk.Frame(orderFrame)
-    infoBox.pack()
+    info_box = tk.Frame(order_frame)
+    info_box.pack()
 
-    itemArray = [
+    item_array = [
         ("Order #", "00"),
         ("SubTotal", "$0.00"),
         ("GST", "$0.00"),
@@ -33,16 +37,12 @@ def mainGUI(window, manager):
 
     for i in range(6):
         for j in range(2):
-            e = tk.Entry(infoBox)
-            e.grid(row=i, column=j)
-            e.insert(tk.END, itemArray[i][j])
-            if (j == 1):
-                manager.orderDetailTable[itemArray[i][0]] = e
+            entry = tk.Entry(info_box)
+            entry.grid(row=i, column=j)
+            entry.insert(tk.END, item_array[i][j])
 
-    
-    
+            if j == 1:
+                manager.order_detail_table[item_array[i][0]] = entry
 
     # Input Frames
-    inputFrameManager.base(inputFrame, manager)
-
-
+    inputFrameManager.base(input_frame, manager)

@@ -1,97 +1,96 @@
+"""This module is responsible for creating the Order Input Frames"""
+
 import tkinter as tk
 import pwd
 import os
 from datetime import datetime
 
-sizeEnum = (
+size_enum = (
     "Small",
     "Medium",
     "Large"
 )
 
-def base(inputFrame, manager):
+def base(input_frame, manager):
+    """This function creates the order input frame, and related frames / features"""
 
-    def numButClick(b):
+    def num_button_click(button):
         def func():
-            manager.numberInput += str(b)
+            manager.number_input += str(button)
 
         return func
 
-    def takeOut():
-        manager.takeOut = True
-        manager.buildItemsList()
+    def take_out():
+        manager.take_out = True
+        manager.build_items_list()
 
-    infoBoard = tk.Frame(inputFrame, width=800, height=100, name="infoBoard")
-    infoBoard.pack()
+    info_board = tk.Frame(input_frame, width=800, height=100, name="infoBoard")
+    info_board.pack()
 
-    padAmount = 50
+    pad_amount = 50
 
     def get_username():
-        return pwd.getpwuid( os.getuid() )[ 0 ]
+        return pwd.getpwuid(os.getuid())[0]
 
-    tk.Label(infoBoard, text=get_username()).pack(side=tk.LEFT, padx=padAmount)
-    sizeLabel = tk.Label(infoBoard, text="Size", name="size")
-    sizeLabel.pack(side=tk.LEFT, padx=padAmount)
+    tk.Label(info_board, text=get_username()).pack(side=tk.LEFT, padx=pad_amount)
+    size_label = tk.Label(info_board, text="Size", name="size")
+    size_label.pack(side=tk.LEFT, padx=pad_amount)
 
-    amountLabel = tk.Label(infoBoard, text="Amount", name="amount")
-    amountLabel.pack(side=tk.LEFT, padx=padAmount)
+    amount_label = tk.Label(info_board, text="Amount", name="amount")
+    amount_label.pack(side=tk.LEFT, padx=pad_amount)
 
-    timeLabel = tk.Label(infoBoard, text="Time", name="time")
-    timeLabel.pack(side=tk.LEFT, padx=padAmount)
+    time_label = tk.Label(info_board, text="Time", name="time")
+    time_label.pack(side=tk.LEFT, padx=pad_amount)
 
-    def updateInfo():
+    def update_info():
         time = datetime.now()
-        timeLabel.configure(text=str(time).split('.')[0])
-        amountLabel.configure(text=str(manager.numberInput))
-        sizeLabel.configure(text=sizeEnum[manager.itemSize])
+        time_label.configure(text=str(time).split('.')[0])
+        amount_label.configure(text=str(manager.number_input))
+        size_label.configure(text=size_enum[manager.item_size])
 
-        manager.window.after(200, updateInfo)
+        manager.window.after(200, update_info)
 
-    updateInfo()
+    update_info()
 
-    numberInput = tk.Frame(inputFrame, width=800, height=100, name="numberInput", bg="blue")
-    numberInput.pack()
+    number_input = tk.Frame(input_frame, width=800, height=100, name="numberInput", bg="blue")
+    number_input.pack()
 
-    for x in range(0,10):
-        tk.Button(numberInput, command=numButClick(x), text=str(x), width=8, height=4).pack(side=tk.LEFT)
-    
-    leftFrame = tk.Frame(inputFrame, width=800, height=225, name="leftFrame")
-    leftFrame.pack(side=tk.TOP)
+    for number in range(0,10):
+        tk.Button(number_input, command=num_button_click(number), text=str(number), width=8, height=4).pack(side=tk.LEFT)
 
-    itemBoard = tk.Frame(leftFrame, width=700, height=225, name="itemBoard", bg="yellow")
-    itemBoard.pack(side=tk.LEFT)
+    left_frame = tk.Frame(input_frame, width=800, height=225, name="leftFrame")
+    left_frame.pack(side=tk.TOP)
 
-    specialBoard = tk.Frame(leftFrame, width=100, height=500, name="specialBoard", bg="blue")
-    specialBoard.pack(side=tk.RIGHT)
+    item_board = tk.Frame(left_frame, width=700, height=225, name="itemBoard", bg="yellow")
+    item_board.pack(side=tk.LEFT)
+
+    special_board = tk.Frame(left_frame, width=100, height=500, name="specialBoard", bg="blue")
+    special_board.pack(side=tk.RIGHT)
 
     # Special Categories
-    tk.Button(specialBoard, width=8, height=4, text="Promo\nItem", command=manager.promo).pack()
-    tk.Button(specialBoard, width=8, height=4, text="Void Line", command=manager.voidItemPress).pack()
-    tk.Button(specialBoard, width=8, height=4, text="Take Out", command=takeOut).pack()
+    tk.Button(special_board, width=8, height=4, text="Promo\nItem", command=manager.promo).pack()
+    tk.Button(special_board, width=8, height=4, text="Void Line", command=manager.void_item_press).pack()
+    tk.Button(special_board, width=8, height=4, text="Take Out", command=take_out).pack()
 
 
-    sizeBoard = tk.Frame(inputFrame, width=800, height=200, name="sizeBoard", bg="blue")
-    sizeBoard.pack()
+    size_board = tk.Frame(input_frame, width=800, height=200, name="sizeBoard", bg="blue")
+    size_board.pack()
 
 
-    def getShowPricesButton():
-        manager.gui.showPrices()
+    def get_show_prices_button():
+        manager.gui.show_prices()
 
-    def setSize(level):
+    def set_size(level):
         def func():
-            manager.itemSize = level
+            manager.item_size = level
 
         return func
 
     # Size Categories
-    tk.Button(sizeBoard, width=16, height=4, text="Small", command=setSize(0)).pack(side=tk.LEFT)
-    tk.Button(sizeBoard, width=16, height=4, text="Medium", command=setSize(1)).pack(side=tk.LEFT)
-    tk.Button(sizeBoard, width=16, height=4, text="Large", command=setSize(2)).pack(side=tk.LEFT)
+    tk.Button(size_board, width=16, height=4, text="Small", command=set_size(0)).pack(side=tk.LEFT)
+    tk.Button(size_board, width=16, height=4, text="Medium", command=set_size(1)).pack(side=tk.LEFT)
+    tk.Button(size_board, width=16, height=4, text="Large", command=set_size(2)).pack(side=tk.LEFT)
 
-    tk.Button(sizeBoard, width=8, height=4, text="Show\nPrices", command=getShowPricesButton).pack(side=tk.LEFT)
-    tk.Button(sizeBoard, width=10, height=4, text="Manager", highlightbackground="red", fg="green", command=manager.manager).pack(side=tk.LEFT)
-    tk.Button(sizeBoard, width=16, height=4, text="Pay", command=manager.pay, highlightbackground="red", fg="green").pack(side=tk.LEFT)
-
-
-        
-
+    tk.Button(size_board, width=8, height=4, text="Show\nPrices", command=get_show_prices_button).pack(side=tk.LEFT)
+    tk.Button(size_board, width=10, height=4, text="Manager", highlightbackground="red", fg="green", command=manager.manager).pack(side=tk.LEFT)
+    tk.Button(size_board, width=16, height=4, text="Pay", command=manager.pay, highlightbackground="red", fg="green").pack(side=tk.LEFT)
